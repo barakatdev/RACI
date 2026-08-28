@@ -3,128 +3,428 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>الحوكمة والامتثال | Governance & Compliance</title>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;500;700&display=swap" rel="stylesheet">
+<title>نظام الحوكمة والامتثال</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
-:root{--navy:#0d1b3e;--navy2:#16295c;--gold:#c9a227;--ink:#1d2433;--muted:#6b7280;--bg:#f7f8fb;--card:#fff}
+:root{--navy:#0d1b3e;--navy2:#16295c;--gold:#c9a227;--ink:#1d2433;--muted:#6b7280;--bg:#f4f6fa;--card:#fff;--line:#e5e9f2;--ok:#0f7b3f;--warn:#b45309;--bad:#b91c1c}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'IBM Plex Sans Arabic',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.85}
-.wrap{max-width:1120px;margin:auto;padding:0 24px}
-header{position:sticky;top:0;z-index:50;background:rgba(13,27,62,.92);backdrop-filter:blur(10px)}
-nav{display:flex;align-items:center;justify-content:space-between;padding:16px 0}
-.logo{color:#fff;font-weight:700;font-size:19px;display:flex;gap:10px;align-items:center}
-.logo span{width:34px;height:34px;border-radius:9px;background:var(--gold);display:grid;place-items:center;color:var(--navy);font-weight:700}
-nav ul{display:flex;gap:28px;list-style:none}
-nav a{color:#cdd5e6;text-decoration:none;font-size:15px;transition:.2s}
-nav a:hover{color:var(--gold)}
-.hero{background:linear-gradient(140deg,var(--navy),var(--navy2));color:#fff;padding:110px 0 130px;position:relative;overflow:hidden}
-.hero::after{content:"";position:absolute;inset:auto -120px -160px auto;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(201,162,39,.28),transparent 65%)}
-.hero h1{font-size:clamp(30px,5vw,52px);font-weight:700;line-height:1.35;max-width:760px}
-.hero h1 b{color:var(--gold)}
-.hero p{margin-top:22px;max-width:640px;color:#c3cce0;font-size:18px;font-weight:300}
-.btns{margin-top:38px;display:flex;gap:14px;flex-wrap:wrap}
-.btn{padding:14px 30px;border-radius:10px;text-decoration:none;font-weight:500;transition:.25s;display:inline-block}
-.btn-p{background:var(--gold);color:var(--navy)}
-.btn-p:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(201,162,39,.35)}
-.btn-s{border:1px solid #495a86;color:#fff}
-.btn-s:hover{background:#ffffff14}
-section{padding:88px 0}
-.eyebrow{color:var(--gold);font-size:14px;letter-spacing:2px;font-weight:500}
-h2{font-size:clamp(24px,3.4vw,34px);margin:10px 0 14px;font-weight:700}
-.lead{color:var(--muted);max-width:620px;font-weight:300}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:24px;margin-top:46px}
-.card{background:var(--card);border:1px solid #e8ebf2;border-radius:16px;padding:32px;transition:.28s}
-.card:hover{transform:translateY(-6px);box-shadow:0 18px 44px rgba(13,27,62,.10);border-color:#d6dcea}
-.ic{width:50px;height:50px;border-radius:13px;background:#eef1f8;display:grid;place-items:center;font-size:23px;margin-bottom:18px}
-.card h3{font-size:19px;margin-bottom:10px}
-.card p{color:var(--muted);font-size:15px;font-weight:300}
-.alt{background:#fff}
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:20px;margin-top:44px}
-.stat{text-align:center;padding:30px 18px;border-radius:14px;background:linear-gradient(160deg,var(--navy),var(--navy2));color:#fff}
-.stat b{display:block;font-size:38px;color:var(--gold)}
-.stat span{color:#b9c2d8;font-size:14px}
-.steps{margin-top:44px;display:grid;gap:16px}
-.step{display:flex;gap:20px;background:#fff;border:1px solid #e8ebf2;border-right:4px solid var(--gold);border-radius:12px;padding:22px 26px}
-.step b{color:var(--gold);font-size:22px;min-width:36px}
-.cta{background:linear-gradient(140deg,var(--navy),var(--navy2));color:#fff;text-align:center;border-radius:22px;padding:70px 30px;margin:0 24px}
-.cta h2{color:#fff}.cta p{color:#c3cce0;margin:12px auto 30px;max-width:520px;font-weight:300}
-footer{background:#0a1430;color:#93a0bd;padding:44px 0;margin-top:80px;font-size:14px}
-.fx{display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px}
-@media(max-width:760px){nav ul{display:none}section{padding:62px 0}}
+body{font-family:'IBM Plex Sans Arabic',system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:14px}
+header{background:linear-gradient(120deg,var(--navy),var(--navy2));color:#fff;padding:0 22px;position:sticky;top:0;z-index:60;box-shadow:0 2px 18px rgba(13,27,62,.25)}
+.top{display:flex;align-items:center;justify-content:space-between;height:62px;max-width:1400px;margin:auto}
+.logo{display:flex;gap:10px;align-items:center;font-weight:700;font-size:17px}
+.logo i{width:32px;height:32px;border-radius:9px;background:var(--gold);color:var(--navy);display:grid;place-items:center;font-style:normal;font-weight:700}
+.tabs{display:flex;gap:4px;max-width:1400px;margin:auto;overflow-x:auto}
+.tabs button{background:none;border:0;color:#c0cae0;padding:12px 16px;font:inherit;font-size:14px;cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap}
+.tabs button.on{color:#fff;border-color:var(--gold);font-weight:500}
+.tabs button:hover{color:#fff}
+main{max-width:1400px;margin:26px auto;padding:0 22px}
+.page{display:none}.page.on{display:block}
+h1{font-size:22px;margin-bottom:6px}
+.sub{color:var(--muted);margin-bottom:22px;font-weight:300}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px;margin-bottom:26px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+.kpi b{display:block;font-size:30px;color:var(--navy)}
+.kpi span{color:var(--muted);font-size:13px}
+.kpi.g b{color:var(--ok)}.kpi.r b{color:var(--bad)}.kpi.y b{color:var(--warn)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;margin-bottom:22px}
+.ph{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.ph h2{font-size:17px}
+.btn{border:0;border-radius:9px;padding:10px 18px;font:inherit;font-size:13px;cursor:pointer;transition:.2s}
+.btn-p{background:var(--navy);color:#fff}.btn-p:hover{background:var(--navy2)}
+.btn-g{background:var(--gold);color:var(--navy);font-weight:500}
+.btn-o{background:#fff;border:1px solid var(--line);color:var(--ink)}.btn-o:hover{background:#f7f8fb}
+.btn-d{background:#fee2e2;color:var(--bad)}
+.scroll{overflow-x:auto;border-radius:12px;border:1px solid var(--line)}
+table{width:100%;border-collapse:collapse;font-size:13px;background:#fff}
+th{background:var(--navy);color:#fff;padding:11px 9px;text-align:right;font-weight:500;white-space:nowrap;font-size:12.5px}
+td{padding:6px;border-bottom:1px solid var(--line);vertical-align:middle}
+tr:nth-child(even) td{background:#fafbfd}
+input,select,textarea{font:inherit;font-size:13px;width:100%;border:1px solid transparent;background:transparent;border-radius:7px;padding:7px;color:var(--ink)}
+input:focus,select:focus,textarea:focus{outline:0;border-color:var(--gold);background:#fffdf5}
+td.auto{background:#f2f4f9!important;color:#4b5563;font-size:12.5px}
+select{cursor:pointer;background:#f0f5fc}
+.chip{padding:3px 10px;border-radius:20px;font-size:12px;display:inline-block}
+.c-ok{background:#dcfce7;color:var(--ok)}.c-bad{background:#fee2e2;color:var(--bad)}.c-warn{background:#fef3c7;color:var(--warn)}
+.raci{font-weight:700;text-align:center;border-radius:6px;cursor:pointer;background:#f0f5fc}
+.A{background:#fee2e2!important;color:#b91c1c}.R{background:#dcfce7!important;color:#0f7b3f}
+.C{background:#dbeafe!important;color:#1d4ed8}.I{background:#f3f4f6!important;color:#6b7280}
+.toast{position:fixed;bottom:24px;left:24px;background:var(--navy);color:#fff;padding:12px 22px;border-radius:10px;opacity:0;transform:translateY(14px);transition:.3s;z-index:99}
+.toast.on{opacity:1;transform:none}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+label.f{font-size:12px;color:var(--muted);display:block;margin-bottom:4px}
+.fld{flex:1;min-width:190px}
+.fld input,.fld select{border:1px solid var(--line);background:#fff}
+/* ===== وثيقة التكليف ===== */
+#doc{background:#fff;border:2px solid var(--navy);border-radius:6px;padding:30px;max-width:860px;margin:auto}
+#doc .dh{text-align:center;border-bottom:3px double var(--navy);padding-bottom:14px;margin-bottom:8px}
+#doc .dh h3{font-size:21px;color:var(--navy)}
+#doc .dh p{color:var(--muted);font-size:12px}
+#doc .meta{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);padding:8px 0 16px;flex-wrap:wrap;gap:8px}
+#doc .sec{background:var(--navy);color:#fff;padding:7px 12px;font-weight:500;margin:18px 0 0;border-radius:5px 5px 0 0;font-size:13.5px}
+#doc .box{border:1px solid var(--line);border-top:0;padding:12px;font-size:13px;line-height:1.9}
+#doc .kv{display:grid;grid-template-columns:1fr 1fr;gap:0}
+#doc .kv div{border:1px solid var(--line);padding:8px 10px;font-size:13px}
+#doc .kv div:nth-child(odd){background:#eef2f9;font-weight:500;max-width:190px}
+#doc table{font-size:12.5px}#doc th{background:#2c4b8f}
+#doc .sign{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:22px}
+#doc .sign div{border:1px solid #9aa4bd;padding:10px;text-align:center;font-size:12px}
+#doc .sign div b{display:block;background:#eef2f9;margin:-10px -10px 10px;padding:7px;font-size:12.5px}
+#doc .sign small{display:block;color:#6b7280;margin-top:16px}
+#doc .note{background:#fff8e1;border:1px solid #f0d98a;color:#7a5c00;padding:9px;font-size:11.5px;margin-top:18px;border-radius:6px}
+@media print{
+ body{background:#fff}
+ header,.tabs,.noprint,#toast{display:none!important}
+ main{margin:0;padding:0;max-width:none}
+ .page{display:none!important}.page.on{display:block!important}
+ #doc{border:1.5px solid #000;box-shadow:none;max-width:none;padding:14px}
+ @page{size:A4;margin:10mm}
+}
+@media(max-width:700px){#doc .kv,#doc .sign{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 
-<header><div class="wrap"><nav>
-  <div class="logo"><span>ح</span> الحوكمة والامتثال</div>
-  <ul>
-    <li><a href="#services">الخدمات</a></li>
-    <li><a href="#method">المنهجية</a></li>
-    <li><a href="#tools">الأدوات</a></li>
-    <li><a href="#contact">تواصل</a></li>
-  </ul>
-</nav></div></header>
-
-<div class="hero"><div class="wrap">
-  <h1>حوكمة تُبنى على <b>الوضوح</b>، وامتثال يُقاس <b>بالأثر</b></h1>
-  <p>تصميم الهياكل التنظيمية، ومصفوفات الصلاحيات، وأدلة المهام، وأطر الالتزام — بمنهجية عملية قابلة للتطبيق والقياس.</p>
-  <div class="btns">
-    <a href="#services" class="btn btn-p">استعرض الخدمات</a>
-    <a href="#contact" class="btn btn-s">احجز استشارة</a>
+<header>
+ <div class="top">
+  <div class="logo"><i>ح</i> نظام الحوكمة والامتثال</div>
+  <div class="row noprint">
+   <button class="btn btn-o" onclick="exportJSON()">⬇ تصدير</button>
+   <button class="btn btn-o" onclick="document.getElementById('imp').click()">⬆ استيراد</button>
+   <input type="file" id="imp" hidden accept=".json" onchange="importJSON(this)">
   </div>
-</div></div>
+ </div>
+ <div class="tabs" id="tabs"></div>
+</header>
 
-<section id="services"><div class="wrap">
-  <div class="eyebrow">الخدمات</div>
-  <h2>ما الذي أقدّمه</h2>
-  <p class="lead">حزمة متكاملة تنقل المنشأة من الاجتهاد الفردي إلى نظام مؤسسي موثّق.</p>
-  <div class="grid">
-    <div class="card"><div class="ic">🏛️</div><h3>الهيكل التنظيمي</h3><p>تصميم الهيكل وخطوط التقرير وفصل المهام بين التنفيذ والرقابة.</p></div>
-    <div class="card"><div class="ic">🔐</div><h3>مصفوفة الصلاحيات</h3><p>تحديد حدود الاعتماد المالية والتشغيلية لكل مستوى إداري.</p></div>
-    <div class="card"><div class="ic">📋</div><h3>أدلة المهام والوصف الوظيفي</h3><p>توصيف كل وظيفة بمهامها وصلاحياتها ومؤشرات أدائها.</p></div>
-    <div class="card"><div class="ic">🧭</div><h3>مصفوفة RACI</h3><p>توزيع المسؤوليات على العمليات الرئيسية ومنع تداخل الأدوار.</p></div>
-    <div class="card"><div class="ic">⚖️</div><h3>الالتزام التنظيمي</h3><p>مواءمة السياسات مع الأنظمة والمتطلبات الرقابية السارية.</p></div>
-    <div class="card"><div class="ic">📊</div><h3>المراجعة الداخلية</h3><p>بناء وظيفة رقابية مستقلة وخطة مراجعة مبنية على المخاطر.</p></div>
+<main>
+ <!-- لوحة المؤشرات -->
+ <section class="page on" id="p0">
+  <h1>لوحة المؤشرات</h1>
+  <p class="sub">ملخص حالة التكليفات والصلاحيات الممنوحة</p>
+  <div class="cards" id="kpis"></div>
+  <div class="panel"><div class="ph"><h2>توزيع الموظفين على المواقع</h2></div><div id="dist"></div></div>
+ </section>
+
+ <!-- سجل الموظفين -->
+ <section class="page" id="p1">
+  <h1>سجل التكليفات</h1>
+  <p class="sub">اختر المسمى الوظيفي فتُعبأ الإدارة والرئيس المباشر والمهام والصلاحيات تلقائياً · كل تعديل يُحفظ فوراً</p>
+  <div class="panel">
+   <div class="ph"><h2>الموظفون</h2>
+    <div class="row"><button class="btn btn-g" onclick="addEmp()">＋ إضافة موظف</button></div></div>
+   <div class="scroll"><table id="tEmp"></table></div>
   </div>
-  <div class="stats">
-    <div class="stat"><b>+39</b><span>بند صلاحية مُقنَّن</span></div>
-    <div class="stat"><b>+23</b><span>عملية موزّعة بـ RACI</span></div>
-    <div class="stat"><b>100%</b><span>توثيق قابل للتدقيق</span></div>
-    <div class="stat"><b>7</b><span>مراحل تنفيذ</span></div>
+ </section>
+
+ <!-- نموذج التكليف -->
+ <section class="page" id="p2">
+  <div class="noprint">
+   <h1>نموذج تحديد المهام والصلاحيات</h1>
+   <p class="sub">اختر الموظف، وحدد الأقسام التي تريد إظهارها، ثم اطبع أو صدّر PDF</p>
+   <div class="panel"><div class="row">
+     <div class="fld"><label class="f">الموظف</label><select id="selEmp" onchange="renderDoc()"></select></div>
+     <div class="fld"><label class="f">الأقسام الاختيارية</label>
+      <div class="row" style="gap:14px;font-size:13px">
+       <label><input type="checkbox" id="s4" checked onchange="renderDoc()" style="width:auto"> الحدود المالية</label>
+       <label><input type="checkbox" id="s5" checked onchange="renderDoc()" style="width:auto"> مؤشرات الأداء</label>
+       <label><input type="checkbox" id="s6" checked onchange="renderDoc()" style="width:auto"> دور RACI</label>
+      </div></div>
+     <button class="btn btn-p" onclick="window.print()">🖨 طباعة / PDF</button>
+   </div></div>
   </div>
-</div></section>
+  <div id="doc"></div>
+ </section>
 
-<section id="method" class="alt"><div class="wrap">
-  <div class="eyebrow">المنهجية</div>
-  <h2>كيف نعمل</h2>
-  <div class="steps">
-    <div class="step"><b>01</b><div><h3>التشخيص</h3><p>قراءة الوضع القائم وتحديد فجوات الحوكمة والمخاطر.</p></div></div>
-    <div class="step"><b>02</b><div><h3>التصميم</h3><p>بناء الهيكل والصلاحيات وأدلة المهام بما يناسب حجم المنشأة.</p></div></div>
-    <div class="step"><b>03</b><div><h3>الاعتماد</h3><p>عرض الوثائق على الإدارة والمجلس واستكمال التواقيع.</p></div></div>
-    <div class="step"><b>04</b><div><h3>التطبيق والقياس</h3><p>التدريب والتفعيل ثم متابعة الالتزام بمؤشرات دورية.</p></div></div>
+ <!-- مصفوفة الصلاحيات -->
+ <section class="page" id="p3">
+  <h1>مصفوفة الصلاحيات</h1>
+  <p class="sub">حدود الاعتماد لكل مستوى إداري — الخانات قابلة للتعديل المباشر</p>
+  <div class="panel">
+   <div class="ph"><h2>بنود الصلاحيات</h2><button class="btn btn-g" onclick="addAuth()">＋ بند جديد</button></div>
+   <div class="scroll"><table id="tAuth"></table></div>
   </div>
-</div></section>
+ </section>
 
-<section id="tools"><div class="wrap">
-  <div class="eyebrow">الأدوات</div>
-  <h2>نماذج جاهزة للتطبيق</h2>
-  <div class="grid">
-    <div class="card"><div class="ic">📄</div><h3>نموذج تحديد المهام والصلاحيات</h3><p>وثيقة فردية لكل موظف تُطبع وتُوقّع وتُحفظ في ملفه.</p></div>
-    <div class="card"><div class="ic">🗂️</div><h3>سجل التكليفات</h3><p>لوحة تحكم مركزية لكل التكليفات والحدود المالية الممنوحة.</p></div>
-    <div class="card"><div class="ic">✅</div><h3>قائمة فحص الامتثال</h3><p>مراجعة دورية للتأكد من سريان الصلاحيات ومطابقتها للواقع.</p></div>
+ <!-- RACI -->
+ <section class="page" id="p4">
+  <h1>مصفوفة RACI</h1>
+  <p class="sub">اضغط أي خانة لتبديل الدور: A مسؤول نهائي · R منفّذ · C يُستشار · I يُبلَّغ · — لا دور</p>
+  <div class="panel">
+   <div class="ph"><h2>العمليات والجهات</h2><button class="btn btn-g" onclick="addProc()">＋ عملية جديدة</button></div>
+   <div class="scroll"><table id="tRaci"></table></div>
   </div>
-</div></section>
+ </section>
 
-<div class="cta" id="contact">
-  <h2>جاهز لبناء إطار حوكمة منشأتك؟</h2>
-  <p>راسلني لمناقشة احتياجك وتحديد نطاق العمل المناسب.</p>
-  <a href="mailto:you@example.com" class="btn btn-p">راسلني الآن</a>
-</div>
+ <!-- الإعدادات -->
+ <section class="page" id="p5">
+  <h1>الإعدادات</h1>
+  <p class="sub">بيانات الموقع محفوظة في متصفحك (localStorage) ولا تُرسل لأي جهة</p>
+  <div class="panel"><div class="ph"><h2>بيانات المنشأة</h2></div>
+   <div class="row">
+    <div class="fld"><label class="f">اسم المنشأة</label><input id="cOrg" oninput="DB.org.name=this.value;save();renderDoc()"></div>
+    <div class="fld"><label class="f">رقم الوثيقة</label><input id="cDoc" oninput="DB.org.doc=this.value;save();renderDoc()"></div>
+    <div class="fld"><label class="f">الإصدار</label><input id="cVer" oninput="DB.org.ver=this.value;save();renderDoc()"></div>
+   </div></div>
+  <div class="panel"><div class="ph"><h2>إدارة البيانات</h2></div>
+   <div class="row">
+    <button class="btn btn-o" onclick="exportJSON()">⬇ تصدير نسخة احتياطية (JSON)</button>
+    <button class="btn btn-o" onclick="exportCSV()">⬇ تصدير الموظفين (CSV / Excel)</button>
+    <button class="btn btn-d" onclick="resetAll()">🗑 إعادة التعيين للبيانات الافتراضية</button>
+   </div></div>
+ </section>
+</main>
 
-<footer><div class="wrap fx">
-  <div>© 2026 — جميع الحقوق محفوظة</div>
-  <div>الحوكمة · الامتثال · المراجعة الداخلية</div>
-</div></footer>
+<div class="toast" id="toast">✓ تم الحفظ تلقائياً</div>
 
+<script>
+/* ================= البيانات المرجعية ================= */
+const JOBS=[
+{t:"المدير التنفيذي / العام",d:"الإدارة العليا",r:"مجلس الإدارة",k:"قيادة تنفيذ الاستراتيجية • اعتماد الخطط والموازنات • متابعة أداء الإدارات • تمثيل الشركة أمام الغير",a:"اعتماد الصرف ضمن حدوده • اعتماد التعاقدات • اعتماد التعيينات",p:"نمو الإيرادات • هامش الربح • تحقيق الموازنة"},
+{t:"مدير المراجعة الداخلية والالتزام",d:"الرقابة والحوكمة",r:"مجلس الإدارة",k:"إعداد خطة المراجعة المبنية على المخاطر • فحص الالتزام بالسياسات • رفع تقارير الملاحظات • متابعة التصحيح",a:"حق الوصول لكل السجلات • إيقاف أي إجراء مخالف مؤقتاً",p:"نسبة إنجاز خطة المراجعة • نسبة إغلاق الملاحظات"},
+{t:"المدير المالي",d:"المالية والمحاسبة",r:"المدير التنفيذي",k:"إعداد القوائم المالية • إدارة الموازنة والتدفق النقدي • مراقبة الائتمان والتحصيل • الالتزام الزكوي والضريبي",a:"اعتماد الصرف ضمن الحد • اعتماد حدود ائتمان العملاء • تجميد العملاء المتعثرين",p:"دقة الإقفال الشهري • متوسط فترة التحصيل • انحراف الموازنة"},
+{t:"محاسب عام",d:"المالية والمحاسبة",r:"المدير المالي",k:"القيود اليومية • مطابقة الحسابات البنكية • إعداد التقارير المساندة • أرشفة المستندات",a:"إدخال القيود دون اعتماد نهائي",p:"عدد أخطاء القيد • التزام مواعيد الإقفال"},
+{t:"محاسب ذمم ومدفوعات",d:"المالية والمحاسبة",r:"المدير المالي",k:"متابعة أعمار الديون • إعداد أوامر الدفع • مطابقة كشوف الموردين",a:"إعداد أوامر الدفع للاعتماد",p:"نسبة الديون المتأخرة • دقة مطابقة الكشوف"},
+{t:"أمين الخزينة",d:"المالية والمحاسبة",r:"المدير المالي",k:"استلام المتحصلات وتوريدها للبنك • إدارة العهدة المستديمة • جرد الصندوق اليومي",a:"الصرف النقدي ضمن حد العهدة",p:"فروقات الصندوق • انتظام التوريد البنكي"},
+{t:"مدير المبيعات والمعارض",d:"المبيعات والتجزئة",r:"المدير التنفيذي",k:"وضع خطط البيع والمستهدفات • إدارة المعارض وفرق البيع • اعتماد قوائم الأسعار والعروض",a:"منح خصومات ضمن النسبة المعتمدة • اعتماد البيع الآجل ضمن الحد",p:"تحقيق المستهدف • هامش المبيعات • معدل التحويل"},
+{t:"مشرف مبيعات الشركات (B2B)",d:"المبيعات والتجزئة",r:"مدير المبيعات والمعارض",k:"تطوير عملاء الشركات • إعداد العروض والمناقصات • متابعة العقود",a:"تقديم عروض ضمن الأسعار المعتمدة",p:"عدد العملاء الجدد • حجم الصفقات"},
+{t:"مدير المشتريات وسلسلة الإمداد",d:"المشتريات واللوجستيات",r:"المدير التنفيذي",k:"تأهيل الموردين والتفاوض • إصدار أوامر الشراء • إدارة الاستيراد والتخليص • تخطيط المخزون",a:"إصدار أمر الشراء ضمن الحد • اختيار المورد وفق المفاضلة",p:"وفر التكلفة • دقة التوريد • دوران المخزون"},
+{t:"مدير المستودع الرئيسي",d:"المشتريات واللوجستيات",r:"مدير المشتريات وسلسلة الإمداد",k:"استلام وفحص البضاعة • حفظ وترتيب المخزون • التحويلات للمعارض • الجرد الدوري",a:"اعتماد إخراج المخزون بأمر تحويل معتمد",p:"دقة الجرد • زمن التجهيز • نسبة التالف"},
+{t:"مدير الخدمات الفنية وما بعد البيع",d:"الخدمات الفنية",r:"المدير التنفيذي",k:"إدارة ورشة الصيانة • مطالبات الضمان مع الموردين • جودة خدمة العملاء الفنية",a:"اعتماد الإصلاح والاستبدال ضمن الحد",p:"زمن الإصلاح • نسبة إعادة الإصلاح • رضا العملاء"},
+{t:"فني صيانة",d:"الخدمات الفنية",r:"مدير الخدمات الفنية وما بعد البيع",k:"تشخيص الأعطال وإصلاحها • تعبئة تقارير الصيانة • تسليم الأجهزة للعملاء",a:"لا صلاحيات مالية",p:"عدد الإصلاحات • نسبة الإصلاح من أول مرة"},
+{t:"مدير الموارد البشرية والشؤون الإدارية",d:"الموارد البشرية",r:"المدير التنفيذي",k:"التوظيف والتدريب • الرواتب وشؤون الموظفين • اللوائح والجزاءات • الشؤون الحكومية",a:"اعتماد الإجازات • التوصية بالتعيين والجزاءات",p:"معدل دوران الموظفين • زمن التوظيف • الالتزام النظامي"},
+{t:"مدير تقنية المعلومات",d:"تقنية المعلومات",r:"المدير التنفيذي",k:"إدارة أنظمة ERP و POS • أمن المعلومات والنسخ الاحتياطي • صلاحيات المستخدمين",a:"منح وتعديل صلاحيات الأنظمة بعد موافقة صاحب العملية",p:"جاهزية الأنظمة • زمن الاستجابة • نجاح النسخ الاحتياطي"},
+{t:"مدير التسويق وتطوير الأعمال",d:"التسويق",r:"المدير التنفيذي",k:"الحملات التسويقية • التجارة الإلكترونية • تحليل السوق والمنافسين",a:"الصرف التسويقي ضمن الموازنة المعتمدة",p:"تكلفة اكتساب العميل • نمو المبيعات الإلكترونية"},
+{t:"مدير المعرض",d:"إدارة المعرض",r:"مدير المبيعات والمعارض",k:"تحقيق مستهدف المعرض • إدارة الفريق والورديات • ضبط العهدة والمخزون • جودة العرض والخدمة",a:"خصم ضمن النسبة • الاسترجاع ضمن الحد • اعتماد الإجازات اليومية",p:"تحقيق المستهدف • فروقات الجرد • سلامة النقدية"},
+{t:"مشرف مبيعات المعرض",d:"إدارة المعرض",r:"مدير المعرض",k:"متابعة أداء المندوبين • تدريبهم • معالجة اعتراضات العملاء",a:"خصم محدود بموافقة مدير المعرض",p:"مبيعات الفريق • متوسط الفاتورة"},
+{t:"مندوب مبيعات (بائع)",d:"إدارة المعرض",r:"مشرف مبيعات المعرض",k:"استقبال العميل وتحديد احتياجه • إتمام البيع على النظام • العناية بالعرض والنظافة",a:"لا صلاحية خصم أو إلغاء",p:"المبيعات الفردية • معدل التحويل"},
+{t:"كاشير / أمين صندوق",d:"إدارة المعرض",r:"مدير المعرض",k:"تحصيل المبالغ وإصدار الفواتير • جرد الصندوق اليومي • توريد النقدية",a:"لا صلاحية إلغاء فاتورة إلا بموافقة",p:"فروقات الصندوق • دقة الفواتير"},
+{t:"أمين مستودع / عهدة المعرض",d:"إدارة المعرض",r:"مدير المعرض",k:"استلام وتسليم الأجهزة • ضبط العهدة • الجرد الدوري",a:"الإخراج بأمر معتمد فقط",p:"دقة العهدة • نسبة الفروقات"},
+{t:"فني دعم فوري",d:"إدارة المعرض",r:"مدير المعرض",k:"الفحص المبدئي للأجهزة • الإصلاحات البسيطة • تحويل الحالات للورشة",a:"لا صلاحيات مالية",p:"زمن الاستجابة • نسبة الحل الفوري"}];
+
+const LOCS=["المقر الرئيسي","معرض ١","معرض ٢","معرض ٣","معرض ٤"];
+const STAT=["ساري","تحت الإجراء","موقوف مؤقتاً","منتهي"];
+const UNITS=["مجلس الإدارة","المدير التنفيذي","المالية","المشتريات والمستودعات","المبيعات والمعارض","مديرو المعارض","الموارد البشرية","تقنية المعلومات","المراجعة الداخلية"];
+const DEPT2UNIT={"الإدارة العليا":1,"الرقابة والحوكمة":8,"المالية والمحاسبة":2,"المشتريات واللوجستيات":3,"المبيعات والتجزئة":4,"إدارة المعرض":5,"الموارد البشرية":6,"تقنية المعلومات":7,"التسويق":4,"الخدمات الفنية":3};
+
+const DEF={
+ org:{name:"شركة توزيع الأجهزة التقنية",doc:"GOV-ORG-001",ver:"الإصدار ١"},
+ emps:[
+  {id:1,no:"1001",name:"محمد بن عبدالله",job:"المدير المالي",loc:"المقر الرئيسي",date:"2026-01-01",st:"ساري",min:5000,max:250000,po:150000,disc:10,ret:50000,leave:"نعم",cash:"نعم",cancel:"لا",move:"نعم",writeoff:"نعم",note:"توقيع مزدوج مع المدير التنفيذي"},
+  {id:2,no:"1002",name:"سارة بنت أحمد",job:"مدير المعرض",loc:"معرض ١",date:"2026-02-15",st:"ساري",min:1000,max:25000,po:0,disc:5,ret:10000,leave:"نعم",cash:"نعم",cancel:"نعم",move:"نعم",writeoff:"لا",note:""}
+ ],
+ auth:[
+  ["اعتماد الصرف النقدي من الصندوق","ر.س","","","","",""],
+  ["اعتماد أوامر الدفع للموردين","ر.س","—","","","",""],
+  ["اعتماد المصروفات التشغيلية","ر.س","","","","",""],
+  ["اعتماد أمر الشراء","ر.س","—","","","",""],
+  ["الشراء المباشر دون منافسة","ر.س","—","","","",""],
+  ["منح خصم على البيع","%","","","","",""],
+  ["اعتماد البيع الآجل ومنح حد ائتماني","ر.س","—","","","",""],
+  ["اعتماد الاسترجاع والاستبدال","ر.س","","","","",""],
+  ["إلغاء فاتورة على نظام نقاط البيع","عدد","","","","",""],
+  ["تحويل المخزون بين المواقع","ر.س","","","","",""],
+  ["إتلاف أو شطب مخزون تالف","ر.س","—","","","",""],
+  ["اعتماد التعيين والترقيات","اعتماد","—","توصية","توصية","اعتماد","اعتماد"]
+ ],
+ raci:[
+  ["إعداد الخطة والموازنة السنوية","A","R","R","C","C","I","C","C","I"],
+  ["اختيار وتأهيل الموردين","I","A","C","R","C","I","—","—","I"],
+  ["إصدار أوامر الشراء والاستيراد","—","A","C","R","C","—","—","—","I"],
+  ["استلام البضاعة وإدخالها للمخزون","—","I","C","A","—","I","—","—","C"],
+  ["تسعير المنتجات وقوائم الأسعار","I","A","C","C","R","I","—","C","I"],
+  ["توزيع المخزون على المعارض","—","I","—","A","C","C","—","—","I"],
+  ["البيع بالتجزئة داخل المعرض","—","I","—","—","A","R","—","C","I"],
+  ["منح الائتمان والبيع الآجل","I","A","R","—","C","C","—","—","C"],
+  ["تحصيل النقدية وتوريدها للبنك","—","I","A","—","C","R","—","—","C"],
+  ["معالجة المرتجعات والاستبدال","—","I","C","C","A","R","—","—","C"],
+  ["الجرد الدوري ومعالجة الفروقات","I","A","C","R","C","R","—","C","C"],
+  ["الإقفال المحاسبي والتقارير المالية","I","A","R","C","C","I","I","I","C"],
+  ["التوظيف والتعيين","I","A","—","C","C","C","R","—","I"],
+  ["إدارة صلاحيات الأنظمة","—","A","C","C","C","C","C","R","C"],
+  ["المراجعة الداخلية ومتابعة الملاحظات","A","C","C","C","C","C","C","C","R"]
+ ]
+};
+const KEY="gov_app_v1";
+let DB=load();
+function load(){try{const s=localStorage.getItem(KEY);return s?JSON.parse(s):JSON.parse(JSON.stringify(DEF))}catch(e){return JSON.parse(JSON.stringify(DEF))}}
+let tmr;
+function save(){localStorage.setItem(KEY,JSON.stringify(DB));clearTimeout(tmr);const t=document.getElementById('toast');t.classList.add('on');tmr=setTimeout(()=>t.classList.remove('on'),1400);renderKPI()}
+function job(t){return JOBS.find(j=>j.t===t)||{d:"",r:"",k:"",a:"",p:""}}
+const money=n=>(+n||0)===0?"—":(+n).toLocaleString('en-US')+" ر.س";
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* ================= التبويبات ================= */
+const TABS=["لوحة المؤشرات","سجل التكليفات","نموذج التكليف","مصفوفة الصلاحيات","مصفوفة RACI","الإعدادات"];
+document.getElementById('tabs').innerHTML=TABS.map((t,i)=>`<button onclick="go(${i})" id="tb${i}" class="${i?'':'on'}">${t}</button>`).join('');
+function go(i){TABS.forEach((_,k)=>{document.getElementById('tb'+k).classList.toggle('on',k===i);document.getElementById('p'+k).classList.toggle('on',k===i)});if(i===2)renderDoc();window.scrollTo(0,0)}
+
+/* ================= المؤشرات ================= */
+function renderKPI(){
+ const e=DB.emps, act=e.filter(x=>x.st==="ساري").length;
+ const inc=e.filter(x=>!x.name||!x.job||!x.loc||(+x.max<+x.min)).length;
+ const hq=e.filter(x=>x.loc==="المقر الرئيسي").length;
+ const cap=e.reduce((s,x)=>s+(+x.max||0),0);
+ document.getElementById('kpis').innerHTML=`
+ <div class="kpi"><b>${e.length}</b><span>إجمالي المكلفين</span></div>
+ <div class="kpi g"><b>${act}</b><span>تكليفات سارية</span></div>
+ <div class="kpi ${inc?'r':''}"><b>${inc}</b><span>سجلات تحتاج استكمال</span></div>
+ <div class="kpi"><b>${hq}</b><span>بالمقر الرئيسي</span></div>
+ <div class="kpi"><b>${e.length-hq}</b><span>بالمعارض</span></div>
+ <div class="kpi y"><b>${cap.toLocaleString('en-US')}</b><span>إجمالي سقوف الاعتماد (ر.س)</span></div>`;
+ const by={};LOCS.forEach(l=>by[l]=0);DB.emps.forEach(x=>{if(by[x.loc]!=null)by[x.loc]++});
+ const mx=Math.max(1,...Object.values(by));
+ document.getElementById('dist').innerHTML=Object.entries(by).map(([l,n])=>
+  `<div style="display:flex;align-items:center;gap:12px;margin:9px 0"><span style="min-width:110px;font-size:13px">${l}</span>
+   <div style="flex:1;background:#eef1f7;border-radius:8px;height:22px;overflow:hidden"><div style="width:${n/mx*100}%;height:100%;background:linear-gradient(90deg,#16295c,#c9a227)"></div></div>
+   <b style="min-width:26px;text-align:center">${n}</b></div>`).join('');
+}
+
+/* ================= جدول الموظفين ================= */
+const COLS=[["no","الرقم الوظيفي",70],["name","اسم المكلف",150]];
+function renderEmp(){
+ const opt=a=>a.map(v=>`<option>${esc(v)}</option>`).join('');
+ let h=`<thead><tr><th>م</th><th>الرقم</th><th>اسم المكلف</th><th>المسمى الوظيفي</th><th>الإدارة (آلي)</th><th>الرئيس المباشر (آلي)</th><th>الموقع</th><th>التاريخ</th><th>الحالة</th>
+ <th>حد أدنى</th><th>حد أعلى</th><th>أمر شراء</th><th>خصم %</th><th>استرجاع</th><th>إجازات</th><th>صرف نقدي</th><th>إلغاء فاتورة</th><th>تحويل مخزون</th><th>شطب مخزون</th><th>ملاحظات</th><th>التحقق</th><th></th></tr></thead><tbody>`;
+ DB.emps.forEach((e,i)=>{
+  const j=job(e.job);
+  const bad=(+e.max<+e.min)?`<span class="chip c-bad">⚠ الأعلى أقل من الأدنى</span>`:(!e.name||!e.job||!e.loc)?`<span class="chip c-warn">⚠ ناقص</span>`:`<span class="chip c-ok">✓ مكتمل</span>`;
+  const num=(k)=>`<input type="number" value="${e[k]||0}" oninput="upd(${i},'${k}',this.value)">`;
+  const yn=(k)=>`<select onchange="upd(${i},'${k}',this.value)">${['نعم','لا'].map(v=>`<option ${e[k]===v?'selected':''}>${v}</option>`).join('')}</select>`;
+  h+=`<tr>
+   <td style="text-align:center;color:#9aa">${i+1}</td>
+   <td><input value="${esc(e.no)}" oninput="upd(${i},'no',this.value)"></td>
+   <td><input value="${esc(e.name)}" oninput="upd(${i},'name',this.value)"></td>
+   <td><select onchange="upd(${i},'job',this.value)"><option value=""></option>${JOBS.map(x=>`<option ${e.job===x.t?'selected':''}>${esc(x.t)}</option>`).join('')}</select></td>
+   <td class="auto">${esc(j.d)}</td><td class="auto">${esc(j.r)}</td>
+   <td><select onchange="upd(${i},'loc',this.value)">${LOCS.map(v=>`<option ${e.loc===v?'selected':''}>${v}</option>`).join('')}</select></td>
+   <td><input type="date" value="${esc(e.date)}" oninput="upd(${i},'date',this.value)"></td>
+   <td><select onchange="upd(${i},'st',this.value)">${STAT.map(v=>`<option ${e.st===v?'selected':''}>${v}</option>`).join('')}</select></td>
+   <td>${num('min')}</td><td>${num('max')}</td><td>${num('po')}</td><td>${num('disc')}</td><td>${num('ret')}</td>
+   <td>${yn('leave')}</td><td>${yn('cash')}</td><td>${yn('cancel')}</td><td>${yn('move')}</td><td>${yn('writeoff')}</td>
+   <td><input value="${esc(e.note)}" oninput="upd(${i},'note',this.value)"></td>
+   <td style="text-align:center">${bad}</td>
+   <td><button class="btn btn-d" style="padding:6px 10px" onclick="delEmp(${i})">✕</button></td></tr>`;
+ });
+ document.getElementById('tEmp').innerHTML=h+'</tbody>';
+ const s=document.getElementById('selEmp');
+ s.innerHTML=DB.emps.map((e,i)=>`<option value="${i}">${esc(e.name||'(بدون اسم)')} — ${esc(e.job||'')}</option>`).join('');
+}
+function upd(i,k,v){DB.emps[i][k]=v;save();if(k==='job'||k==='name')renderEmp();}
+function addEmp(){DB.emps.push({id:Date.now(),no:"",name:"",job:"",loc:"المقر الرئيسي",date:"",st:"تحت الإجراء",min:0,max:0,po:0,disc:0,ret:0,leave:"لا",cash:"لا",cancel:"لا",move:"لا",writeoff:"لا",note:""});save();renderEmp()}
+function delEmp(i){if(confirm("حذف هذا السجل؟")){DB.emps.splice(i,1);save();renderEmp();renderDoc()}}
+
+/* ================= وثيقة التكليف ================= */
+function renderDoc(){
+ const i=+document.getElementById('selEmp').value;const e=DB.emps[i];const d=document.getElementById('doc');
+ if(!e){d.innerHTML='<p style="text-align:center;color:#888;padding:40px">لا يوجد موظفون — أضف سجلاً من تبويب «سجل التكليفات».</p>';return}
+ const j=job(e.job), u=DEPT2UNIT[j.d];
+ const roles=L=>{const o=DB.raci.filter(r=>u!=null&&String(r[u+1]).includes(L)).map(r=>r[0]);return o.length?o.join("  •  "):"— لا يوجد —"};
+ const S4=document.getElementById('s4').checked,S5=document.getElementById('s5').checked,S6=document.getElementById('s6').checked;
+ let n=1;
+ d.innerHTML=`
+ <div class="dh"><h3>${esc(DB.org.name)}</h3><h3 style="font-size:17px;margin-top:4px">نموذج تحديد المهام والصلاحيات</h3>
+  <p>وثيقة حوكمة — لا تُعد سارية إلا بعد استكمال التوقيعات والاعتماد</p></div>
+ <div class="meta"><span>${esc(DB.org.doc)} · ${esc(DB.org.ver)}</span>
+  <span>رقم النموذج: AUT-${esc(e.no||'—')}-${new Date().getFullYear()}</span>
+  <span>تاريخ الإصدار: ${new Date().toISOString().slice(0,10)}</span></div>
+
+ <div class="sec">${n++}. بيانات المكلف</div>
+ <div class="box" style="padding:0"><div class="kv">
+  <div>الاسم</div><div>${esc(e.name)}</div>
+  <div>الرقم الوظيفي</div><div>${esc(e.no)}</div>
+  <div>المسمى الوظيفي</div><div>${esc(e.job)}</div>
+  <div>الإدارة</div><div>${esc(j.d)}</div>
+  <div>الموقع</div><div>${esc(e.loc)}</div>
+  <div>الرئيس المباشر</div><div>${esc(j.r)}</div>
+  <div>تاريخ التكليف</div><div>${esc(e.date)}</div>
+  <div>حالة التكليف</div><div>${esc(e.st)}</div>
+ </div></div>
+
+ <div class="sec">${n++}. المهام والمسؤوليات</div><div class="box">${esc(j.k)}</div>
+ <div class="sec">${n++}. الصلاحيات الممنوحة</div><div class="box">${esc(j.a)}</div>
+
+ ${S4?`<div class="sec">${n++}. الحدود المالية والصلاحيات التشغيلية</div><div class="box" style="padding:0">
+  <table><thead><tr><th>البند</th><th>الحد الأدنى</th><th>الحد الأعلى</th><th>الضابط</th></tr></thead><tbody>
+  <tr><td>اعتماد الصرف والمصروفات</td><td>${money(e.min)}</td><td>${money(e.max)}</td><td>بمستند معتمد ومرفقات أصلية</td></tr>
+  <tr><td>اعتماد أمر الشراء</td><td>—</td><td>${money(e.po)}</td><td>ثلاثة عروض فوق الحد المتوسط</td></tr>
+  <tr><td>اعتماد الاسترجاع والاستبدال</td><td>—</td><td>${money(e.ret)}</td><td>ضمن سياسة الاسترجاع المعلنة</td></tr>
+  <tr><td>نسبة الخصم القصوى</td><td>—</td><td>${(+e.disc||0)?(+e.disc)+"%":"—"}</td><td>يُسجل سبب الخصم على النظام</td></tr>
+  <tr><td>اعتماد الإجازات</td><td>—</td><td>${esc(e.leave)}</td><td>وفق نظام العمل واللائحة</td></tr>
+  <tr><td>الصرف النقدي من الصندوق</td><td>—</td><td>${esc(e.cash)}</td><td>بموجب سند صرف معتمد</td></tr>
+  <tr><td>إلغاء فاتورة نقاط البيع</td><td>—</td><td>${esc(e.cancel)}</td><td>يُسجل السبب ويُراجع شهرياً</td></tr>
+  <tr><td>تحويل المخزون بين المواقع</td><td>—</td><td>${esc(e.move)}</td><td>بأمر تحويل معتمد</td></tr>
+  <tr><td>شطب / إتلاف مخزون</td><td>—</td><td>${esc(e.writeoff)}</td><td>بمحضر لجنة وموافقة المالية</td></tr>
+  ${e.note?`<tr><td>ملاحظات وضوابط خاصة</td><td colspan="3">${esc(e.note)}</td></tr>`:''}
+  </tbody></table></div>`:''}
+
+ ${S5?`<div class="sec">${n++}. مؤشرات قياس الأداء</div><div class="box">${esc(j.p)}</div>`:''}
+
+ ${S6?`<div class="sec">${n++}. دور المكلف في مصفوفة RACI</div><div class="box" style="padding:0"><div class="kv">
+   <div>مسؤول نهائي (A)</div><div>${esc(roles("A"))}</div>
+   <div>منفّذ (R)</div><div>${esc(roles("R"))}</div>
+   <div>يُستشار (C)</div><div>${esc(roles("C"))}</div></div></div>`:''}
+
+ <div class="sec">${n++}. الإقرار والاعتماد</div>
+ <div class="box">أقر أنا الموقع أدناه باطلاعي على المهام والصلاحيات الواردة في هذا النموذج، وألتزم بممارستها ضمن الحدود المعتمدة ووفق سياسات وإجراءات الشركة، وأتحمل المسؤولية عن أي تجاوز لها. وأقر بأن هذه الصلاحيات شخصية لا يجوز تفويضها للغير إلا بتفويض كتابي محدد المدة، وأنها تسقط تلقائياً عند انتهاء الخدمة أو النقل أو تعديل الهيكل التنظيمي.</div>
+ <div class="sign">
+  ${["المكلف","الرئيس المباشر","الموارد البشرية","المدير التنفيذي"].map(x=>`<div><b>${x}</b>الاسم: .................<small>التوقيع: ...............</small><small>التاريخ:     /     /</small></div>`).join('')}
+ </div>
+ <div class="note">يُحفظ أصل هذا النموذج في ملف الموظف لدى الموارد البشرية، وترسل نسخة للمالية والمراجعة الداخلية. أي تعديل على الحدود يتطلب إصدار نموذج جديد.</div>`;
+}
+
+/* ================= مصفوفة الصلاحيات ================= */
+const LVL=["مدير المعرض","مدير الإدارة","المدير المالي","المدير التنفيذي","مجلس الإدارة"];
+function renderAuth(){
+ let h=`<thead><tr><th>م</th><th>البند</th><th>الوحدة</th>${LVL.map(l=>`<th>${l}</th>`).join('')}<th></th></tr></thead><tbody>`;
+ DB.auth.forEach((r,i)=>{
+  h+=`<tr><td style="text-align:center;color:#9aa">${i+1}</td>
+   <td><input value="${esc(r[0])}" oninput="uA(${i},0,this.value)"></td>
+   <td style="width:90px"><input value="${esc(r[1])}" oninput="uA(${i},1,this.value)"></td>
+   ${[2,3,4,5,6].map(c=>`<td style="width:110px"><input value="${esc(r[c])}" placeholder="—" style="text-align:center" oninput="uA(${i},${c},this.value)"></td>`).join('')}
+   <td><button class="btn btn-d" style="padding:6px 10px" onclick="delAuth(${i})">✕</button></td></tr>`;
+ });
+ document.getElementById('tAuth').innerHTML=h+'</tbody>';
+}
+function uA(i,c,v){DB.auth[i][c]=v;save()}
+function addAuth(){DB.auth.push(["بند جديد","ر.س","","","","",""]);save();renderAuth()}
+function delAuth(i){if(confirm("حذف البند؟")){DB.auth.splice(i,1);save();renderAuth()}}
+
+/* ================= RACI ================= */
+const CYC=["—","A","R","C","I"];
+function renderRaci(){
+ let h=`<thead><tr><th>م</th><th>العملية / النشاط</th>${UNITS.map(u=>`<th style="writing-mode:vertical-rl;height:130px">${u}</th>`).join('')}<th></th></tr></thead><tbody>`;
+ DB.raci.forEach((r,i)=>{
+  h+=`<tr><td style="text-align:center;color:#9aa">${i+1}</td>
+   <td style="min-width:230px"><input value="${esc(r[0])}" oninput="uR(${i},0,this.value)"></td>
+   ${UNITS.map((_,k)=>{const v=r[k+1]||"—";return `<td style="width:52px"><div class="raci ${v!=='—'?v:''}" style="padding:7px" onclick="cyc(${i},${k+1})">${v}</div></td>`}).join('')}
+   <td><button class="btn btn-d" style="padding:6px 10px" onclick="delProc(${i})">✕</button></td></tr>`;
+ });
+ document.getElementById('tRaci').innerHTML=h+'</tbody>';
+}
+function uR(i,c,v){DB.raci[i][c]=v;save()}
+function cyc(i,c){const cur=DB.raci[i][c]||"—";DB.raci[i][c]=CYC[(CYC.indexOf(cur)+1)%CYC.length];save();renderRaci();}
+function addProc(){DB.raci.push(["عملية جديدة",...UNITS.map(()=>"—")]);save();renderRaci()}
+function delProc(i){if(confirm("حذف العملية؟")){DB.raci.splice(i,1);save();renderRaci()}}
+
+/* ================= تصدير / استيراد ================= */
+function dl(name,txt,type){const b=new Blob(["\ufeff"+txt],{type});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;a.click()}
+function exportJSON(){dl("governance-backup.json",JSON.stringify(DB,null,2),"application/json")}
+function exportCSV(){
+ const head=["الرقم","الاسم","المسمى","الإدارة","الرئيس المباشر","الموقع","التاريخ","الحالة","حد أدنى","حد أعلى","أمر شراء","خصم%","استرجاع","إجازات","صرف نقدي","إلغاء فاتورة","تحويل مخزون","شطب مخزون","ملاحظات"];
+ const rows=DB.emps.map(e=>{const j=job(e.job);return [e.no,e.name,e.job,j.d,j.r,e.loc,e.date,e.st,e.min,e.max,e.po,e.disc,e.ret,e.leave,e.cash,e.cancel,e.move,e.writeoff,e.note]});
+ dl("employees.csv",[head,...rows].map(r=>r.map(v=>`"${String(v==null?'':v).replace(/"/g,'""')}"`).join(",")).join("\n"),"text/csv;charset=utf-8")
+}
+function importJSON(inp){const f=inp.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const o=JSON.parse(r.result);if(!o.emps)throw 0;DB=o;save();boot();alert("تم الاستيراد بنجاح")}catch(e){alert("الملف غير صالح")}};r.readAsText(f);inp.value=""}
+function resetAll(){if(confirm("سيتم حذف كل تعديلاتك واستعادة البيانات الافتراضية. متابعة؟")){DB=JSON.parse(JSON.stringify(DEF));save();boot()}}
+
+/* ================= التشغيل ================= */
+function boot(){
+ document.getElementById('cOrg').value=DB.org.name;
+ document.getElementById('cDoc').value=DB.org.doc;
+ document.getElementById('cVer').value=DB.org.ver;
+ renderKPI();renderEmp();renderAuth();renderRaci();renderDoc();
+}
+boot();
+</script>
 </body>
 </html>
