@@ -1450,3 +1450,241 @@ setInterval(function(){if(ME){syncTasks();renderTasks();}},3600000);
 </script>
 </body>
 </html>/script>
+<script>
+/* ============ تحديث v7 — يُلصق في النهاية ويتجاوز الإعدادات السابقة ============ */
+
+/* (1) الشريط العلوي ودمج التكليفات */
+var TABS=[
+ {n:"لوحة المؤشرات",p:["p0"]},
+ {n:"المهام والاجتماعات",p:["p5"]},
+ {n:"التكليفات",p:["p1","p4","p3"],sub:["سجل التكليفات","خطابات التكليف","تكليف جديد"]},
+ {n:"دليل الوظائف",p:["p2"]},
+ {n:"مصفوفة الصلاحيات",p:["p6"]},
+ {n:"مصفوفة RACI",p:["p7"]},
+ {n:"المستخدمون",p:["p8"],adm:1},
+ {n:"الإعدادات",p:["p9"],adm:1}
+];
+var ALLP=["p0","p1","p2","p3","p4","p5","p6","p7","p8","p9"];
+var CURT=0,CURS=0;
+document.getElementById("tabs").innerHTML=TABS.map(function(t,i){return '<button id="tb'+i+'" class="'+(i?"":"on")+'" onclick="go('+i+')">'+t.n+'</button>';}).join("");
+if(!document.getElementById("subbar")){
+ document.querySelector("main").insertAdjacentHTML("afterbegin",
+ '<div id="subbar" class="row" style="display:none;gap:6px;margin-bottom:14px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px"></div>');
+}
+function go(i,s){
+ var t=TABS[i];if(!t)return;
+ if(t.adm&&ME&&ME.role!=="مدير النظام"){alert("هذا القسم لمدير النظام فقط");return;}
+ CURT=i;CURS=(s==null?0:s);
+ for(var k=0;k<TABS.length;k++){var b=$("tb"+k);if(b)b.classList.toggle("on",k===i);}
+ ALLP.forEach(function(p){var el=$(p);if(el)el.classList.remove("on");});
+ var sb=$("subbar");
+ function paintSub(){sb.innerHTML=t.sub.map(function(x,n){return '<button class="btn btn-s'+(n===CURS?" on":"")+'" onclick="go('+i+','+n+')">'+x+'</button>';}).join("");}
+ if(t.sub){
+  sb.style.display="flex";
+  if(CURS===2){
+   if(!EDIT){alert("فعّل «وضع التحرير» من الشريط العلوي أولاً");CURS=1;}
+   else{addLetter();CURS=1;msg("تم إنشاء خطاب تكليف جديد — عدّله بالأسفل");}
+  }
+  paintSub();
+  $(t.p[CURS]).classList.add("on");
+ }else{sb.style.display="none";$(t.p[0]).classList.add("on");}
+ var cur=t.sub?t.p[CURS]:t.p[0];
+ if(cur==="p3")renderDoc();
+ if(cur==="p4"){renderLetters();renderLetter();}
+ if(cur==="p5"){renderTasks();renderMeets();renderMinutes();}
+ applyLock();window.scrollTo(0,0);
+}
+
+/* (2) مكتبة المهام والصلاحيات العامة */
+var LIBK={
+"مالية ومحاسبية":["إعداد القيود اليومية ومراجعتها","مطابقة الحسابات البنكية شهرياً","إعداد القوائم المالية والتقارير الدورية","متابعة أعمار الديون والتحصيل","إعداد الموازنة التقديرية ومتابعة الانحرافات","إدارة التدفق النقدي والسيولة","إعداد الإقرارات الزكوية والضريبية","مراجعة أوامر الدفع قبل الاعتماد","جرد الصندوق والعهد بشكل دوري","متابعة الأصول الثابتة والإهلاك"],
+"مشتريات ومخزون":["تأهيل الموردين وتقييم أدائهم","إعداد المفاضلة بين العروض","إصدار ومتابعة أوامر الشراء","متابعة الاستيراد والتخليص الجمركي","استلام البضاعة وفحص المطابقة","تخطيط مستويات المخزون وإعادة الطلب","تنفيذ الجرد الدوري والمفاجئ","معالجة المرتجعات للموردين","إدارة التحويلات بين المواقع"],
+"مبيعات وتسويق":["تحقيق المستهدفات البيعية الشهرية","إعداد وتحديث قوائم الأسعار","متابعة العملاء وتنمية العلاقات","إعداد العروض الفنية والمالية","تحليل السوق والمنافسين","إدارة الحملات التسويقية والرقمية","معالجة شكاوى العملاء والاسترجاع","إعداد تقارير المبيعات وتحليلها"],
+"موارد بشرية":["استقطاب المرشحين وإجراء المقابلات","إعداد العقود وملفات الموظفين","احتساب الرواتب والبدلات","متابعة الحضور والانصراف والإجازات","إعداد خطة التدريب وتنفيذها","تطبيق اللوائح والجزاءات","إنهاء الخدمة والمخالصات","الشؤون الحكومية والتأمينات"],
+"تقنية معلومات":["إدارة أنظمة ERP ونقاط البيع","إدارة صلاحيات المستخدمين","تنفيذ النسخ الاحتياطي والتحقق منه","حماية أمن المعلومات والبيانات","الدعم الفني للمستخدمين","إدارة الشبكات والأجهزة"],
+"رقابة وحوكمة":["إعداد خطة المراجعة المبنية على المخاطر","تنفيذ اختبارات الالتزام","رفع تقارير الملاحظات ومتابعة تصحيحها","مراجعة السياسات والإجراءات","تقييم المخاطر التشغيلية","التحقق من تطبيق فصل المهام"],
+"عمليات وإدارية":["الإشراف على سير العمل اليومي","إعداد التقارير الدورية للإدارة","تطبيق معايير الجودة والسلامة","تنظيم الاجتماعات ومتابعة القرارات","أرشفة المستندات وحفظها","التنسيق بين الإدارات"]};
+var LIBA={
+"صلاحيات مالية":["اعتماد الصرف ضمن الحد الممنوح","التوقيع على الشيكات والتحويلات (توقيع مزدوج)","اعتماد أوامر الدفع للموردين","الصرف من العهدة المستديمة","اعتماد السلف والعهد","منح حد ائتماني للعملاء","تجميد التعامل مع العملاء المتعثرين","اعتماد الخصومات ضمن النسبة المعتمدة"],
+"مشتريات ومخزون":["إصدار أمر شراء ضمن الحد","اختيار المورد وفق المفاضلة","اعتماد الشراء المباشر ضمن الحد","اعتماد تحويل المخزون بين المواقع","اعتماد إخراج المخزون بأمر معتمد","التوصية بشطب أو إتلاف المخزون التالف","اعتماد تسوية فروقات الجرد"],
+"موارد بشرية":["اعتماد الإجازات لفريقه","التوصية بالتعيين والترقية","التوصية بالجزاءات","اعتماد الانتداب والسفر ضمن الحد","اعتماد جداول الورديات"],
+"تشغيلية":["إلغاء فاتورة على النظام بتسجيل السبب","اعتماد الاسترجاع والاستبدال ضمن الحد","إيقاف العمل عند وجود خطر على السلامة","اعتماد الإجراءات التشغيلية"],
+"رقابية":["الوصول إلى كافة السجلات والمستندات","إيقاف أي إجراء مخالف مؤقتاً","طلب البيانات من أي إدارة","رفع التقارير مباشرة لمجلس الإدارة"],
+"تقنية":["منح وتعديل صلاحيات الأنظمة","تعديل بيانات الأصناف والأسعار على النظام","الوصول لقواعد البيانات"],
+"قيود":["لا يملك صلاحيات مالية","تنفيذي فقط دون اعتماد","يعمل بتفويض كتابي محدد المدة"]};
+function grpHTML(obj,cls,cur){
+ var h="";
+ for(var g in obj){
+  h+='<div style="font-weight:700;font-size:12px;color:var(--gold);padding:9px 6px 3px;border-top:1px solid var(--line)">'+esc(g)+'</div>';
+  obj[g].forEach(function(x){
+   h+='<label><input type="checkbox" class="'+cls+'" data-v="'+esc(x)+'" '+(cur.indexOf(x)>=0?"checked":"")+'><span>'+esc(x)+'</span></label>';
+  });
+ }
+ return h;
+}
+function openSkills(i){
+ if(!guard())return;
+ var e=DB.emps[i];if(!e){alert("اختر موظفاً أولاً");return;}
+ skIdx=i;
+ var j=job(e.job),baseK=splitB(j.k),baseA=splitB(j.a);
+ var curK=splitB(effK(e)),curA=splitB(effA(e));
+ $("skTitle").textContent="تحرير المهام والصلاحيات — "+(e.name||"موظف")+" · "+(e.job||"بدون مسمى");
+ var hk='<div style="font-weight:700;font-size:12.5px;color:var(--navy);padding:3px 6px 5px">✦ مقترحة من دليل الوظائف لهذا المسمى</div>';
+ hk+=baseK.length?baseK.map(function(x){return '<label><input type="checkbox" class="kbx" data-v="'+esc(x)+'" '+(curK.indexOf(x)>=0?"checked":"")+'><span>'+esc(x)+'</span></label>';}).join(""):'<p style="color:#9aa;font-size:12px;padding:4px 6px">لا توجد مهام لهذا المسمى في دليل الوظائف — اختر من المكتبة أدناه.</p>';
+ hk+='<div style="font-weight:700;font-size:12.5px;color:var(--navy);padding:13px 6px 3px;border-top:2px solid var(--gold)">📚 مكتبة المهام العامة</div>'+grpHTML(LIBK,"kbx",curK);
+ $("skK").innerHTML=hk;
+ var ha='<div style="font-weight:700;font-size:12.5px;color:var(--navy);padding:3px 6px 5px">✦ مقترحة من دليل الوظائف لهذا المسمى</div>';
+ ha+=baseA.length?baseA.map(function(x){return '<label><input type="checkbox" class="abx" data-v="'+esc(x)+'" '+(curA.indexOf(x)>=0?"checked":"")+'><span>'+esc(x)+'</span></label>';}).join(""):'<p style="color:#9aa;font-size:12px;padding:4px 6px">لا توجد صلاحيات لهذا المسمى — اختر من المكتبة أدناه.</p>';
+ ha+='<div style="font-weight:700;font-size:12.5px;color:var(--navy);padding:13px 6px 3px;border-top:2px solid var(--gold)">📚 مكتبة الصلاحيات العامة</div>'+grpHTML(LIBA,"abx",curA);
+ $("skA").innerHTML=ha;
+ var allK=baseK.slice(),allA=baseA.slice(),g;
+ for(g in LIBK)LIBK[g].forEach(function(x){if(allK.indexOf(x)<0)allK.push(x);});
+ for(g in LIBA)LIBA[g].forEach(function(x){if(allA.indexOf(x)<0)allA.push(x);});
+ $("skKx").value=curK.filter(function(x){return allK.indexOf(x)<0;}).join("\n");
+ $("skAx").value=curA.filter(function(x){return allA.indexOf(x)<0;}).join("\n");
+ $("sk").classList.add("on");
+}
+function saveSkills(){
+ if(skIdx<0)return;
+ var e=DB.emps[skIdx],outK=[],outA=[],i;
+ var ks=document.querySelectorAll("#skK input.kbx");
+ for(i=0;i<ks.length;i++)if(ks[i].checked){var v=ks[i].getAttribute("data-v");if(outK.indexOf(v)<0)outK.push(v);}
+ var as=document.querySelectorAll("#skA input.abx");
+ for(i=0;i<as.length;i++)if(as[i].checked){var w=as[i].getAttribute("data-v");if(outA.indexOf(w)<0)outA.push(w);}
+ splitB($("skKx").value).forEach(function(x){if(outK.indexOf(x)<0)outK.push(x);});
+ splitB($("skAx").value).forEach(function(x){if(outA.indexOf(x)<0)outA.push(x);});
+ snap();
+ e.kOv=outK.join(" • ");e.aOv=outA.join(" • ");
+ DB.letters.forEach(function(l){if(l.to===e.name)l.body=letterBody(e);});
+ save(true);closeSkills();renderEmp();renderDoc();renderLetters();renderLetter();applyLock();
+ msg("تم الحفظ: "+outK.length+" مهمة و"+outA.length+" صلاحية");
+}
+
+/* (3) المعاينة عند الطلب فقط */
+function injectPrev(){
+ [["doc","معاينة النموذج",renderDoc],["letter","معاينة الخطاب",renderLetter],["minutes","معاينة المحضر",renderMinutes]].forEach(function(x){
+  var el=$(x[0]);if(!el||el.getAttribute("data-pv"))return;
+  el.setAttribute("data-pv","1");el.style.display="none";
+  var b=document.createElement("button");
+  b.className="btn btn-p";b.style.cssText="margin:0 0 12px";
+  b.textContent="👁 "+x[1];
+  b.onclick=function(){
+   var show=(el.style.display==="none");
+   el.style.display=show?"":"none";
+   b.textContent=(show?"✕ إغلاق ":"👁 ")+x[1];
+   b.className="btn "+(show?"btn-o":"btn-p");
+   if(show)x[2]();
+  };
+  el.parentNode.insertBefore(b,el);
+ });
+}
+
+/* (4) الاجتماعات: بدء · تحضير · غائبون */
+var MST=["مجدول","منعقد","منتهي","ملغى"];
+function addMeet(){if(!guard())return;snap();DB.meets.push({date:today(),cat:"شهري",type:MT[0],subj:"اجتماع جديد",chair:"",sec:"",members:[],guests:"",attend:{},mst:"مجدول",startedAt:"",sum:"",dec:""});save(true);renderMeets();renderMinutes();applyLock();}
+function injectMeetBtns(){
+ var b=document.querySelector('button[onclick="openMembers()"]');
+ if(!b||b.getAttribute("data-mb"))return;
+ b.setAttribute("data-mb","1");
+ var s=document.createElement("button");
+ s.className="btn btn-p ed";s.style.marginLeft="6px";s.textContent="▶ بدء الاجتماع";s.onclick=startMeet;
+ var a=document.createElement("button");
+ a.className="btn btn-g ed";a.style.marginLeft="6px";a.textContent="✔ تحضير الأعضاء";a.onclick=takeAttendance;
+ b.parentNode.insertBefore(s,b);b.parentNode.insertBefore(a,b);
+}
+function startMeet(){
+ if(!guard())return;
+ var m=DB.meets[+$("selMeet").value];if(!m){alert("اختر اجتماعاً");return;}
+ snap();
+ if(m.mst==="منعقد"){m.mst="منتهي";}
+ else{m.mst="منعقد";m.startedAt=new Date().toLocaleString("ar-EG");}
+ save(true);renderMeets();renderMinutes();applyLock();
+ msg(m.mst==="منعقد"?("▶ بدأ الاجتماع "+m.startedAt):"✔ تم إنهاء الاجتماع");
+}
+function renderMembersModal(){var box=document.querySelector("#mb .modal"),o=box.getAttribute("data-orig");if(o)box.innerHTML=o;}
+function takeAttendance(){
+ if(!guard())return;
+ var i=+$("selMeet").value,m=DB.meets[i];if(!m){alert("اختر اجتماعاً");return;}
+ var list=(m.members||[]).slice();
+ if(m.chair&&list.indexOf(m.chair)<0)list.unshift(m.chair);
+ if(m.sec&&list.indexOf(m.sec)<0)list.splice(1,0,m.sec);
+ if(!list.length){alert("حدّد الأعضاء أولاً من زر «تحديد الحضور والأدوار»");return;}
+ if(!m.attend)m.attend={};
+ var box=document.querySelector("#mb .modal");
+ if(!box.getAttribute("data-orig"))box.setAttribute("data-orig",box.innerHTML);
+ var h='<h2>تحضير أعضاء الاجتماع</h2><p class="sb">'+esc(m.subj)+' — '+esc(m.date)+'</p><div class="pick" style="max-height:340px">';
+ list.forEach(function(n,k){
+  var v=m.attend[n]||"حاضر";
+  h+='<div style="display:flex;align-items:center;gap:10px;padding:8px 6px;border-bottom:1px solid var(--line)">'+
+  '<b style="flex:1;font-size:13px">'+esc(n)+(n===m.chair?' <span class="chip c-b">رئيس</span>':(n===m.sec?' <span class="chip c-b">أمين سر</span>':''))+'</b>'+
+  '<select id="at'+k+'" data-n="'+esc(n)+'" style="width:135px;border:1px solid var(--line)">'+
+  ["حاضر","غائب","معتذر","عن بُعد"].map(function(o){return '<option'+(v===o?" selected":"")+'>'+o+'</option>';}).join("")+'</select></div>';
+ });
+ h+='</div><div class="row" style="margin-top:16px;justify-content:flex-end">'+
+ '<button class="btn btn-o" onclick="renderMembersModal();document.getElementById(\'mb\').classList.remove(\'on\')">إلغاء</button>'+
+ '<button class="btn btn-g" onclick="saveAttendance('+i+','+list.length+')">حفظ التحضير</button></div>';
+ box.innerHTML=h;$("mb").classList.add("on");
+}
+function saveAttendance(i,n){
+ var m=DB.meets[i];snap();m.attend=m.attend||{};
+ for(var k=0;k<n;k++){var s=$("at"+k);if(s)m.attend[s.getAttribute("data-n")]=s.value;}
+ save(true);renderMembersModal();$("mb").classList.remove("on");
+ renderMeets();renderMinutes();applyLock();
+ var ab=0;for(var x in m.attend)if(m.attend[x]!=="حاضر"&&m.attend[x]!=="عن بُعد")ab++;
+ msg(ab?("تم التحضير — الغائبون والمعتذرون: "+ab):"تم التحضير — الحضور كامل");
+}
+function minutesHTML(){
+ var m=DB.meets[+$("selMeet").value];
+ if(!m)return '<p style="text-align:center;color:#888;padding:40px">لا توجد اجتماعات — اضغط «＋ اجتماع».</p>';
+ var rel=DB.tasks.filter(function(t){return t.src&&m.subj&&t.src.indexOf(m.subj)>=0;});
+ var att=attList(m),at=m.attend||{},pres=[],abs=[];
+ att.forEach(function(x){
+  var st=at[x]||"حاضر";
+  if(st==="حاضر"||st==="عن بُعد")pres.push(x+(st==="عن بُعد"?" (عن بُعد)":""));
+  else abs.push(x+" ("+st+")");
+ });
+ var h='<div class="dh">'+(DB.org.logo?'<img src="'+DB.org.logo+'">':"")+'<h3>'+esc(DB.org.name)+'</h3><h3 style="font-size:17px">محضر اجتماع</h3><p>'+esc(DB.org.doc)+' · '+esc(DB.org.ver)+'</p></div>'+
+ '<div class="box p0" style="border-top:1px solid var(--line)"><div class="kv">'+
+ '<div>نوع الاجتماع</div><div>'+esc(m.type)+'</div><div>التصنيف</div><div>'+esc(m.cat||"—")+'</div>'+
+ '<div>التاريخ</div><div>'+esc(m.date)+'</div><div>الموضوع</div><div>'+esc(m.subj)+'</div>'+
+ '<div>رئيس الاجتماع</div><div>'+esc(m.chair||"—")+'</div><div>أمين السر</div><div>'+esc(m.sec||"—")+'</div>'+
+ '<div>حالة الاجتماع</div><div>'+esc(m.mst||"مجدول")+'</div><div>وقت البدء</div><div>'+esc(m.startedAt||"—")+'</div></div></div>'+
+ '<div class="sec">الحضور والغياب</div><div class="box">'+
+ (att.length?('<b>الحاضرون ('+pres.length+'):</b> '+(pres.length?pres.map(esc).join("  •  "):"—")+
+ '<br><b style="color:#b91c1c">الغائبون والمعتذرون ('+abs.length+'):</b> '+(abs.length?abs.map(esc).join("  •  "):"لا يوجد")):"— لم يُحدَّد الحضور —")+'</div>'+
+ '<div class="sec">ملخص النقاش</div><div class="box">'+esc(m.sum||"—")+'</div>'+
+ '<div class="sec">القرارات والتوصيات</div><div class="box">'+esc(m.dec||"—")+'</div>';
+ if(rel.length)h+='<div class="sec">المهام المنبثقة عن الاجتماع</div><div class="box p0"><table><thead><tr><th>المهمة</th><th>المكلف</th><th>الدورية</th><th>الاستحقاق</th><th>الحالة</th></tr></thead><tbody>'+
+ rel.map(function(t){return '<tr><td>'+esc(t.title)+'</td><td>'+esc(t.owner)+'</td><td>'+esc(t.per||"—")+'</td><td>'+esc(t.due)+'</td><td>'+esc(t.st)+'</td></tr>';}).join("")+'</tbody></table></div>';
+ h+='<div class="sign" style="grid-template-columns:repeat(2,1fr)"><div><b>رئيس الاجتماع</b>'+esc(m.chair||"..........")+'<small>التوقيع: ..........</small></div><div><b>أمين السر</b>'+esc(m.sec||"..........")+'<small>التوقيع: ..........</small></div></div>';
+ if(pres.length)h+='<div class="sign" style="grid-template-columns:repeat('+Math.min(4,pres.length)+',1fr)">'+pres.map(function(x){return '<div><b>عضو حاضر</b>'+esc(x)+'<small>التوقيع: ..........</small></div>';}).join("")+'</div>';
+ return h;
+}
+
+/* (5) إعادة تعريف التشغيل */
+function boot(){
+ if(!ME)return;
+ ["emps","jobs","tasks","meets","letters","arch","auth","raci","depts","locs","units","lvl"].forEach(function(k){if(!DB[k])DB[k]=[];});
+ if(!DB.d2u)DB.d2u={};
+ DB.emps.forEach(function(e){if(e.kOv===undefined)e.kOv="";if(e.aOv===undefined)e.aOv="";});
+ DB.tasks.forEach(function(t){if(!t.per)t.per="لمرة واحدة";});
+ DB.meets.forEach(function(m){if(!m.cat)m.cat="شهري";if(!m.members)m.members=[];if(!m.attend)m.attend={};if(!m.mst)m.mst="مجدول";if(m.startedAt===undefined)m.startedAt="";if(m.att&&!m.guests){m.guests=m.att;delete m.att;}});
+ $("whoami").textContent=(ME.name||ME.u)+" · "+ME.role;
+ var adminOnly=(ME.role!=="مدير النظام");
+ if($("tb6"))$("tb6").style.display=adminOnly?"none":"";
+ if($("tb7"))$("tb7").style.display=adminOnly?"none":"";
+ $("cOrg").value=DB.org.name||"";$("cDoc").value=DB.org.doc||"";$("cVer").value=DB.org.ver||"";
+ $("cMail").value=DB.org.mail||"";$("cWA").value=DB.org.wa||"";$("cAddr").value=DB.org.addr||"";
+ $("cDepts").value=DB.depts.join("، ");$("cLocs").value=DB.locs.join("، ");
+ $("cUnits").value=DB.units.join("، ");$("cLvl").value=DB.lvl.join("، ");
+ $("cCredit").value=store.credit||"";
+ paintBrand();paintCredit();renderCos();renderUsers();
+ renderKPI();renderEmp();renderJobs();renderChart();renderLetters();
+ renderTasks();renderMeets();renderAuth();renderRaci();renderDoc();renderLetter();renderMinutes();
+ for(var k in sel)paintBar(k);
+ paintUndo();injectPrev();injectMeetBtns();
+ if(adminOnly&&(CURT===6||CURT===7))CURT=0;
+ go(CURT,CURS===2?1:CURS);
+}
+if(typeof ME!=="undefined"&&ME)boot();
+</script>
