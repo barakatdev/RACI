@@ -590,7 +590,7 @@ try{store=JSON.parse(localStorage.getItem(KEY));}catch(e){store=null;}
 if(!store||!store.cos){
  store={active:"c1",seq:1,credit:"إعداد بركات بن أحمد القرني",
  users:[{u:"admin",p:"admin123",name:"مدير النظام",role:"مدير النظام",active:"نعم"}],
- cos:{c1:blankCo("شركة توزيع الأجهزة التقنية","retail")}};
+ cos:{c1:blankCo("شركة بركات","retail")}};
  store.cos.c1.emps=[{no:"1001",name:"محمد بن عبدالله",job:"المدير المالي",loc:"المقر الرئيسي",mail:"",phone:"",date:"2026-01-01",st:"ساري",min:5000,max:250000,po:150000,disc:10,ret:50000,leave:"نعم",cash:"نعم",cancel:"لا",move:"نعم",writeoff:"نعم",note:"",kOv:"",aOv:""}];
 }
 if(!store.credit)store.credit="إعداد بركات بن أحمد القرني";
